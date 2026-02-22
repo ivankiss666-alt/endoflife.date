@@ -44,6 +44,12 @@ Run the site locally:
 bundle exec jekyll serve --host localhost --port 4000
 ```
 
+Or use the native helper command that validates a phone number argument (E.164) and starts the app:
+
+```sh
+./bin/run-app +529993512043
+```
+
 Browse to `http://localhost:4000` and you should see the site running locally.
 If you find any errors at this stage, check [Jekyll's troubleshooting page](https://jekyllrb.com/docs/troubleshooting/#configuration-problems)
 or [ask a question in the Q&A category](https://github.com/endoflife-date/endoflife.date/discussions/new/) on GitHub Discussions.
