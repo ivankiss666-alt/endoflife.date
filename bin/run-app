@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ "$#" -lt 1 ]; then
+  echo "Uso: $0 <numero_telefono> [puerto]" >&2
+  exit 1
+fi
+
+PHONE_NUMBER="$1"
+PORT="${2:-4000}"
+
+if [[ ! "$PHONE_NUMBER" =~ ^\+[0-9]{10,15}$ ]]; then
+  echo "Error: el número debe estar en formato internacional E.164 (ej: +529993512043)." >&2
+  exit 2
+fi
+
+export EOL_CONTACT_PHONE="$PHONE_NUMBER"
+
+echo "Número recibido: $EOL_CONTACT_PHONE"
+echo "Intentando iniciar Jekyll en http://127.0.0.1:${PORT} ..."
+
+if bundle exec jekyll --version >/dev/null 2>&1; then
+  exec bundle exec jekyll serve --host 0.0.0.0 --port "$PORT"
+fi
+
+echo "No fue posible ejecutar Jekyll (dependencias Ruby faltantes)."
+echo "Arrancando un servidor estático temporal para abrir la app sin build en http://127.0.0.1:${PORT}"
+exec python3 -m http.server "$PORT" --bind 0.0.0.0
